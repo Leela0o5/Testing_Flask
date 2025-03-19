@@ -19,10 +19,10 @@
         
         {% for row in rows %}
            <tr>
-              <td>{{ row[0] }}</td>
+            <td>{{loop.index}}</td>
               <td>{{ row[1] }}</td>
-              <td> {{ row[2] }}</td>
-              <td>{{ row[3] }}</td>	
+              <td>{{ row[2] }}</td>
+              <td> {{ row[3] }}</td>
               <td><a href="/update/{{ row[0] }}">Update</a> <a href="/delete/{{ row[0] }}">Delete</a></td>
            </tr>
         {% endfor %}

@@ -90,18 +90,15 @@ def update(student_id):
 
 
 
-@app.route('/student/<int:student_id>',methods=['POST','GET'])
-def details(student_id):
+@app.route('/student/<string:roll_number>',methods=['POST','GET'])
+def details(roll_number):
     with sql.connect("database.db") as conn:
         cur = conn.cursor()
-        cur.execute("SELECT * FROM student WHERE student_id=?", (student_id,))
+        cur.execute("SELECT * FROM student WHERE roll_number=?", (roll_number,))
         rows = cur.fetchone()
         rows = [rows] if rows else []
-        cur.execute(" SELECT course.course_id, course.course_code, course.course_name, course.course_description FROM course inner join enrollments  ON course.course_id = enrollments.course_id WHERE enrollments.student_id=?",(student_id,))
+        cur.execute(" SELECT course.course_id, course.course_code, course.course_name, course.course_description FROM course inner join enrollments  ON course.course_id = enrollments.course_id inner join student on enrollments.student_id = student.student_id where student.roll_number=?",(roll_number,))
         rows2 = cur.fetchall()
-        print("Enrollments for student", student_id, ":", rows2)
-    if request.method == 'POST':
-        return render_template('studentDetailsPage.html', rows=rows, rows2=rows2)
     return render_template('studentDetailsPage.html', rows=rows, rows2=rows2)
 
 if __name__ == "__main__":
